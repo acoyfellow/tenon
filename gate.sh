@@ -87,6 +87,9 @@ node ../basic/kernel/planted.test.mjs
 set +e; node ../basic/kernel/run.mjs --app=coil --root=/nonexistent >/dev/null 2>&1; code=$?; set -e
 test "$code" -eq 2 || { echo "missing root exited $code, want 2"; exit 1; }
 
+echo "13. live check: attack running tenon over HTTP, and catch 4 behaviour tricks the text check misses"
+node ../basic/kernel/live.planted.test.mjs
+
 echo "12. a passing gate leaves basic reports and diagrams unchanged"
 dirty=$(git -C ../basic status --porcelain -- reports diagrams)
 test -z "$dirty" || { echo "gate changed tracked files:"; echo "$dirty"; exit 1; }

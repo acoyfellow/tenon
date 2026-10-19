@@ -19,6 +19,14 @@ node basic/kernel/run.mjs --app=<coil|hark|my-ax|chat-ax|skin|tenon>
 
 This writes `basic/reports/kernel-<app>.md` for people and `basic/reports/kernel-<app>.json` for agents.
 
+## Check behaviour, not just text
+
+```sh
+BASE=http://127.0.0.1:8787 node basic/kernel/live.mjs --app=tenon
+```
+
+This attacks a running app: no sign-in, forged sign-in, one user reading another's data, a write from another site, and agent code calling the network. Each app needs an adapter in `basic/kernel/live-adapters/<app>.mjs` that says how to sign in two users and which routes read, write and run code. A live PASS beats a text `has`.
+
 ## Read the result
 
 - `has`: a strong probe matched. Read the cited line before you trust it.
