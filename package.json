@@ -22,5 +22,8 @@
     "test": "node test/security.mjs",
     "demo": "node scripts/demo.mjs",
     "gate": "bash gate.sh"
+  },
+  "dependencies": {
+    "typebox": "^1.3.27"
   }
 }

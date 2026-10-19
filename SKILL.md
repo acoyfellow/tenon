@@ -50,7 +50,11 @@ One gap is one task. Do not batch rules in one change.
 
 ## Guard the checks themselves
 
-Load `tenon/guard/extension.ts` as a Pi extension while fixing gaps. It runs write-judge (one Clef question: does this weaken a test, assertion, check or guard?) on edits to `tenon/test/`, `tenon/gate.sh` and `basic/kernel/`, and blocks at p >= 0.5. Other paths are not judged. Needs `WRITE_JUDGE_ACCOUNT_ID`, `WRITE_JUDGE_TOKEN`, `WRITE_JUDGE_MODEL`; without them it does nothing. Receipt: `tenon/receipts/guard.json`.
+Load `tenon/guard/extension.ts` as a Pi extension while fixing gaps. It runs write-judge (one Clef question: does this weaken a test, assertion, check or guard?) on edits and whole-file writes to `tenon/test/`, `tenon/guard/`, `tenon/receipts/`, `tenon/gate.sh`, `tenon/invariants.json` and `basic/kernel/`. Paths are resolved first, so `..` does not get around it. It blocks at p >= 0.5.
+
+It fails closed. If Clef cannot be reached, it tries one fresh token from `wrangler auth token`; if that fails too, the guarded edit is blocked with a refresh hint. Without `WRITE_JUDGE_*` set, every guarded edit is blocked. Other paths are never judged.
+
+The Clef client is vendored in `tenon/guard/vendor/` from the write-judge commit in `SOURCE.json`. Receipt: `tenon/receipts/guard.json`.
 
 ## Rules
 

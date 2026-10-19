@@ -3,6 +3,9 @@ set -euo pipefail
 cd "$(dirname "$0")"
 BASIC=../basic
 
+echo "0. Clef token works (exit 3 if not)"
+node --experimental-strip-types guard/token-check.mjs 2>&1 | grep -v ExperimentalWarning; test "${PIPESTATUS[0]}" -eq 0 || exit 3
+
 echo "1. typecheck"
 npx tsc -p .
 
@@ -93,6 +96,7 @@ node ../basic/kernel/live.planted.test.mjs
 echo "14. write-judge guard: frozen planted edits to tenon tests, gate and kernel"
 node --experimental-strip-types guard/planted.mjs 2>&1 | grep -v ExperimentalWarning
 test "${PIPESTATUS[0]}" -eq 0
+cmp -s guard/vendor/clef.ts <(git -C ../write-judge show "$(node -p "require('./guard/vendor/SOURCE.json').commit")":src/clef.ts) || { echo "vendored clef.ts differs from its recorded source commit"; exit 1; }
 
 echo "12. the kernel is deterministic: a second run changes nothing"
 snapshot() { (cd ../basic && cat reports/kernel-*.md reports/kernel-*.json diagrams/kernel-matrix.svg | shasum -a 256); }

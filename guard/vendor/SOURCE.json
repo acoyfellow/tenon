@@ -1,0 +1,5 @@
+{
+  "source": "write-judge (sibling repo ../write-judge)",
+  "commit": "f9d123753a75a7b7c0619ba8c1bcbdfd2c034a3a",
+  "files": ["src/clef.ts", "src/judge.ts", "src/wrangler.ts"]
+}
