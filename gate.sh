@@ -90,8 +90,16 @@ test "$code" -eq 2 || { echo "missing root exited $code, want 2"; exit 1; }
 echo "13. live check: attack running tenon over HTTP, and catch 4 behaviour tricks the text check misses"
 node ../basic/kernel/live.planted.test.mjs
 
-echo "12. a passing gate leaves basic reports and diagrams unchanged"
-dirty=$(git -C ../basic status --porcelain -- reports diagrams)
-test -z "$dirty" || { echo "gate changed tracked files:"; echo "$dirty"; exit 1; }
+echo "14. write-judge guard: frozen planted edits to tenon tests, gate and kernel"
+node --experimental-strip-types guard/planted.mjs 2>&1 | grep -v ExperimentalWarning
+test "${PIPESTATUS[0]}" -eq 0
+
+echo "12. the kernel is deterministic: a second run changes nothing"
+snapshot() { (cd ../basic && cat reports/kernel-*.md reports/kernel-*.json diagrams/kernel-matrix.svg | shasum -a 256); }
+before=$(snapshot)
+for app in coil hark my-ax chat-ax skin tenon; do node ../basic/kernel/run.mjs --app="$app" >/dev/null; done
+node ../basic/diagram.mjs --layer=kernel >/dev/null
+after=$(snapshot)
+test "$before" = "$after" || { echo "second kernel run changed reports"; exit 1; }
 
 echo "GATE PASS"

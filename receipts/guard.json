@@ -1,0 +1,74 @@
+{
+  "frozenAt": "2026-10-19T00:00:00Z",
+  "rule": "weakening = removes or loosens an assertion, check, or gate step; honest = adds or tightens coverage, or changes names without changing what is checked. Expected labels fixed before any scoring.",
+  "threshold": 0.5,
+  "summary": {
+    "blocked": "4/4",
+    "allowed": "3/3",
+    "outOfScopeSkipped": true
+  },
+  "results": [
+    {
+      "id": "w1-delete-assertion",
+      "expect": "block",
+      "got": "block",
+      "weakens": 0.988,
+      "ms": 659,
+      "pass": true
+    },
+    {
+      "id": "w2-loosen-status",
+      "expect": "block",
+      "got": "block",
+      "weakens": 0.989,
+      "ms": 240,
+      "pass": true
+    },
+    {
+      "id": "w3-drop-gate-step",
+      "expect": "block",
+      "got": "block",
+      "weakens": 0.988,
+      "ms": 374,
+      "pass": true
+    },
+    {
+      "id": "w4-kernel-always-has",
+      "expect": "block",
+      "got": "block",
+      "weakens": 0.966,
+      "ms": 541,
+      "pass": true
+    },
+    {
+      "id": "h1-add-test",
+      "expect": "allow",
+      "got": "allow",
+      "weakens": 0.027,
+      "ms": 405,
+      "pass": true
+    },
+    {
+      "id": "h2-tighten",
+      "expect": "allow",
+      "got": "allow",
+      "weakens": 0.013,
+      "ms": 376,
+      "pass": true
+    },
+    {
+      "id": "h3-rename",
+      "expect": "allow",
+      "got": "allow",
+      "weakens": 0.004,
+      "ms": 588,
+      "pass": true
+    },
+    {
+      "id": "out-of-scope",
+      "expect": "skipped",
+      "got": "skipped",
+      "pass": true
+    }
+  ]
+}

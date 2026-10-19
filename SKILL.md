@@ -48,6 +48,10 @@ Each gap in `kernel-<app>.json` has a `fix` object:
 
 One gap is one task. Do not batch rules in one change.
 
+## Guard the checks themselves
+
+Load `tenon/guard/extension.ts` as a Pi extension while fixing gaps. It runs write-judge (one Clef question: does this weaken a test, assertion, check or guard?) on edits to `tenon/test/`, `tenon/gate.sh` and `basic/kernel/`, and blocks at p >= 0.5. Other paths are not judged. Needs `WRITE_JUDGE_ACCOUNT_ID`, `WRITE_JUDGE_TOKEN`, `WRITE_JUDGE_MODEL`; without them it does nothing. Receipt: `tenon/receipts/guard.json`.
+
 ## Rules
 
 The nine rules live in `tenon/invariants.json`. That file is the only source. Do not copy rule text into other files.
