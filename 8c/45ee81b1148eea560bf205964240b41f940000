@@ -1,0 +1,49 @@
+.gitignore
+  s_afaa55a7f6b1c0::t_8191b99e2e4f53 1-3
+.guardrail/deploys/2026-10-19T03-18-48-016Z.json
+  s_afaa55a7f6b1c0::t_e6ff5d453146da 1-37
+.guardrail/deploys/2026-10-19T03-19-07-206Z.json
+  s_afaa55a7f6b1c0::t_dc857224af7894 1-37
+LICENSE
+  s_afaa55a7f6b1c0::t_2789492a22b0a4 1-21
+OVERLAP.md
+  s_afaa55a7f6b1c0::t_24c1ef965d9ba6 1-89
+README.md
+  s_afaa55a7f6b1c0::t_774b66fa61ea9e 1-27
+gate.sh
+  s_afaa55a7f6b1c0::t_ed43cae873d12b 1-32
+package-lock.json
+  s_afaa55a7f6b1c0::t_5f5e3d1f8f9745 1-2160
+package.json
+  s_afaa55a7f6b1c0::t_1b4532007a3db5 1-26
+receipts/demo.json
+  s_afaa55a7f6b1c0::t_c6eba929503123 1-74
+receipts/security.json
+  s_afaa55a7f6b1c0::t_b3fc0b073daf5a 1-82
+scripts/demo.mjs
+  s_afaa55a7f6b1c0::t_85bb2b5cc40730 1-68
+src/index.ts
+  s_afaa55a7f6b1c0::t_8a838a6109d75f 1-327
+test/security.mjs
+  s_afaa55a7f6b1c0::t_78dfd77dcd4b87 1-172
+tsconfig.json
+  s_afaa55a7f6b1c0::t_5033514a4a7670 1-8
+wrangler.jsonc
+  s_afaa55a7f6b1c0::t_9f6e5be64bea40 1-13
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "8c45ee81b1148eea560bf205964240b41f940000",
+  "prompts": {},
+  "sessions": {
+    "s_afaa55a7f6b1c0": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "01a14ea7-4b6e-73ae-baa7-f14cc479fb9a",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Jordan Coeyman <jcoeyman@cloudflare.com>"
+    }
+  }
+}
