@@ -165,7 +165,7 @@
         ],
         "weak": [
           "rollback\\(",
-          "artifact"
+          "artifacts?\\.(put|get|create|save)\\(|artifact_id|ARTIFACT_ID"
         ]
       },
       "reference": "tenon/src/index.ts:249",

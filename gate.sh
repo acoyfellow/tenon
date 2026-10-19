@@ -81,4 +81,14 @@ echo "10. SKILL.md names the command"
 grep -q 'node basic/kernel/run.mjs --app=' SKILL.md
 grep -q '^name: tenon' SKILL.md
 
+echo "11. kernel cannot be fooled by comments, and fails closed"
+node ../basic/kernel/source.test.mjs
+node ../basic/kernel/planted.test.mjs
+set +e; node ../basic/kernel/run.mjs --app=coil --root=/nonexistent >/dev/null 2>&1; code=$?; set -e
+test "$code" -eq 2 || { echo "missing root exited $code, want 2"; exit 1; }
+
+echo "12. a passing gate leaves basic reports and diagrams unchanged"
+dirty=$(git -C ../basic status --porcelain -- reports diagrams)
+test -z "$dirty" || { echo "gate changed tracked files:"; echo "$dirty"; exit 1; }
+
 echo "GATE PASS"
