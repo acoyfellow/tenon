@@ -1,0 +1,21 @@
+SKILL.md
+  s_afaa55a7f6b1c0::t_066f920f0561b9 22-29
+gate.sh
+  s_afaa55a7f6b1c0::t_1d5ce38516e958 90-92
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "8785891934a81bd3e816ba5353856eb5f732b6bb",
+  "prompts": {},
+  "sessions": {
+    "s_afaa55a7f6b1c0": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "01a14ea7-4b6e-73ae-baa7-f14cc479fb9a",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Jordan Coeyman <jcoeyman@cloudflare.com>"
+    }
+  }
+}
