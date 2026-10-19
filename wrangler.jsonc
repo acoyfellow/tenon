@@ -1,0 +1,13 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "tenon",
+  "main": "src/index.ts",
+  "workers_dev": false,
+  "preview_urls": false,
+  "compatibility_date": "2026-09-30",
+  "compatibility_flags": ["nodejs_compat"],
+  "worker_loaders": [{ "binding": "LOADER" }],
+  "vars": { "TENON_PAYER": "none", "TENON_DEV_LOGIN": "0" },
+  "durable_objects": { "bindings": [{ "name": "OWNER", "class_name": "Owner" }] },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["Owner"] }]
+}

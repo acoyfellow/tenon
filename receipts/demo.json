@@ -1,0 +1,74 @@
+{
+  "at": "2026-10-19T03:19:28.286Z",
+  "base": "http://127.0.0.1:8712",
+  "steps": [
+    {
+      "name": "anonymous visitor is refused",
+      "status": 401
+    },
+    {
+      "name": "owner connects their own account as the payer"
+    },
+    {
+      "name": "agent ships version 1",
+      "status": 201,
+      "body": {
+        "id": 9,
+        "status": "live",
+        "why": ""
+      }
+    },
+    {
+      "name": "agent ships a broken version; the gate rejects it",
+      "status": 422,
+      "body": {
+        "id": 10,
+        "status": "rejected",
+        "why": "boom"
+      }
+    },
+    {
+      "name": "agent ships version 2",
+      "status": 201,
+      "body": {
+        "id": 11,
+        "status": "live",
+        "why": ""
+      }
+    },
+    {
+      "name": "owner rolls back to version 1 (appends, never rewrites)",
+      "status": 201,
+      "body": {
+        "id": 12,
+        "status": "live"
+      }
+    },
+    {
+      "name": "agent code runs in an isolate",
+      "status": 200,
+      "body": {
+        "id": 5,
+        "status": "done",
+        "result": "84",
+        "started_at": 1792379966532,
+        "ended_at": 1792379966535
+      }
+    },
+    {
+      "name": "agent code tries the network and is blocked",
+      "status": 200,
+      "body": {
+        "id": 6,
+        "status": "failed",
+        "result": "\"This worker is not permitted to access the internet via global functions like fetch(). It must use capabilities (such as bindings in 'env') to talk to the outside world.\"",
+        "started_at": 1792379966537,
+        "ended_at": 1792379966540
+      }
+    },
+    {
+      "name": "console screenshot saved",
+      "path": "receipts/demo.png"
+    }
+  ]
+}

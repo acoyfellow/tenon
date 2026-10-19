@@ -1,0 +1,82 @@
+{
+  "at": "2026-10-19T03:19:24.978Z",
+  "passed": 15,
+  "total": 15,
+  "results": [
+    {
+      "id": "T9",
+      "name": "public pages load without sign-in",
+      "pass": true
+    },
+    {
+      "id": "T1",
+      "name": "anonymous API calls are refused",
+      "pass": true
+    },
+    {
+      "id": "T1",
+      "name": "forged and tampered sessions are refused",
+      "pass": true
+    },
+    {
+      "id": "T1",
+      "name": "an Access header without configured Access is refused",
+      "pass": true
+    },
+    {
+      "id": "T2",
+      "name": "state survives and is keyed by owner",
+      "pass": true
+    },
+    {
+      "id": "T2",
+      "name": "one owner cannot read another owner",
+      "pass": true
+    },
+    {
+      "id": "T5",
+      "name": "cross-origin writes are refused",
+      "pass": true
+    },
+    {
+      "id": "T3",
+      "name": "user payer with no grant fails instead of using host inference",
+      "pass": true
+    },
+    {
+      "id": "T3",
+      "name": "user payer with a grant routes to the user account",
+      "pass": true
+    },
+    {
+      "id": "T4",
+      "name": "the grant token never appears in any response",
+      "pass": true
+    },
+    {
+      "id": "T8",
+      "name": "a broken version is rejected and never goes live",
+      "pass": true
+    },
+    {
+      "id": "T8",
+      "name": "rollback appends; history is never rewritten",
+      "pass": true
+    },
+    {
+      "id": "T8",
+      "name": "versions are per owner",
+      "pass": true
+    },
+    {
+      "id": "T6",
+      "name": "owner code has no network",
+      "pass": true
+    },
+    {
+      "id": "T7",
+      "name": "a run is visible, finishes truthfully, and a stop sticks",
+      "pass": true
+    }
+  ]
+}

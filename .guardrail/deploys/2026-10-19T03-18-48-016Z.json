@@ -1,0 +1,37 @@
+{
+  "schema": "guardrail.deploy-receipt.v0",
+  "timestamp": "2026-10-19T03:18:48.016Z",
+  "command": [
+    "guardrail",
+    "receipt",
+    "./.guardrail-staged.94618.wrangler.jsonc"
+  ],
+  "configPath": "./.guardrail-staged.94618.wrangler.jsonc",
+  "decision": {
+    "allowed": true,
+    "findings": []
+  },
+  "exposure": {
+    "isPublic": false,
+    "surface": "no public surface",
+    "reason": "",
+    "criticalMessage": "",
+    "routes": [],
+    "workersDev": false
+  },
+  "bindings": [
+    {
+      "type": "durable_object_namespace",
+      "name": "OWNER"
+    }
+  ],
+  "auth": {
+    "detected": true,
+    "partial": true,
+    "patterns": [
+      "cf-access-jwt"
+    ],
+    "reason": "2 method-branches but only 0 have auth checks — some routes likely unauthenticated",
+    "source": "/Users/jcoeyman/cloudflare/tenon/src/index.ts"
+  }
+}
