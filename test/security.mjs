@@ -1,6 +1,9 @@
 import { spawn } from 'node:child_process';
 import { randomBytes } from 'node:crypto';
-import { writeFileSync, mkdirSync } from 'node:fs';
+import { writeFileSync, mkdirSync, readFileSync } from 'node:fs';
+
+const SPEC = JSON.parse(readFileSync(new URL('../invariants.json', import.meta.url), 'utf8'));
+const KNOWN_IDS = new Set(SPEC.invariants.map((invariant) => invariant.id));
 
 const PORT = Number(process.env.PORT ?? 8711);
 const BASE = `http://127.0.0.1:${PORT}`;
@@ -39,6 +42,7 @@ const call = (cookie, path, init = {}) =>
 
 const results = [];
 const check = async (id, name, fn) => {
+  if (!KNOWN_IDS.has(id)) throw new Error(`unknown invariant ${id}`);
   try {
     await fn();
     results.push({ id, name, pass: true });
@@ -164,6 +168,8 @@ try {
   child.kill();
 }
 
+const covered = new Set(results.map((r) => r.id));
+for (const id of KNOWN_IDS) if (!covered.has(id)) results.push({ id, name: 'has at least one test', pass: false, detail: 'no test for this invariant' });
 const passed = results.filter((r) => r.pass).length;
 for (const r of results) console.log(`${r.pass ? 'PASS' : 'FAIL'} ${r.id} ${r.name}${r.detail ? ` — ${r.detail}` : ''}`);
 console.log(`${passed}/${results.length} passed`);

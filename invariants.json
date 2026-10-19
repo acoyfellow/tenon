@@ -1,0 +1,199 @@
+{
+  "version": 1,
+  "reference": "tenon/src/index.ts",
+  "invariants": [
+    {
+      "id": "T1",
+      "name": "Every non-public request has a verified owner",
+      "breaks": "A forged, tampered, or missing identity reaches app state.",
+      "why": "All five apps gate on Cloudflare identity: Access JWT or Sign in with Cloudflare.",
+      "fix": "Verify an Access JWT or an HMAC-signed session before any app route; refuse with 401.",
+      "probes": {
+        "strong": [
+          "cf-access-jwt-assertion",
+          "\\/oauth\\/callback",
+          "crypto\\.subtle\\.verify|verifySession|readSession"
+        ],
+        "weak": [
+          "status:\\s*401|, 401\\)",
+          "SESSION_SECRET"
+        ]
+      },
+      "reference": "tenon/src/index.ts:49",
+      "tests": [
+        "anonymous API calls are refused",
+        "forged and tampered sessions are refused",
+        "an Access header without configured Access is refused"
+      ]
+    },
+    {
+      "id": "T2",
+      "name": "State lives in a Durable Object keyed by that owner",
+      "breaks": "One owner reads another owner state, or a header or query picks the owner.",
+      "why": "Thread/Hark/UserAgent/AgentDO/Body: one durable home per owner or thread, with SQLite.",
+      "fix": "Derive the Durable Object name from the verified owner only; ignore owner hints in headers and query.",
+      "probes": {
+        "strong": [
+          "(getByName|idFromName)\\(\\s*(owner|user|email|actor|this\\.owner|caller\\.owner|identity)",
+          "props\\.(owner|user)\\b"
+        ],
+        "weak": [
+          "ctx\\.storage\\.sql|storage\\.sql\\.exec|this\\.sql\\b",
+          "idFromName\\(|getByName\\("
+        ]
+      },
+      "reference": "tenon/src/index.ts:133",
+      "tests": [
+        "state survives and is keyed by owner",
+        "one owner cannot read another owner"
+      ]
+    },
+    {
+      "id": "T3",
+      "name": "The payer is explicit, and a user payer never falls back to host inference",
+      "breaks": "A signed-in user call is billed to the host without the operator choosing it.",
+      "why": "coil/hark/skin route model calls to the user account; my-ax/chat-ax use host AI. The rule is: say which, never mix silently.",
+      "fix": "Declare the payer in config; when the payer is user and no grant exists, fail instead of calling env.AI.",
+      "probes": {
+        "strong": [
+          "accounts\\/\\$\\{[^}]*account",
+          "no_user_grant|COIL_AUTH|_PAYER\\b"
+        ],
+        "weak": [
+          "env\\.AI\\b|this\\.env\\.AI\\b",
+          "accountName"
+        ]
+      },
+      "reference": "tenon/src/index.ts:95",
+      "tests": [
+        "user payer with no grant fails instead of using host inference",
+        "user payer with a grant routes to the user account"
+      ]
+    },
+    {
+      "id": "T4",
+      "name": "Secrets and grant tokens never reach the browser or a log",
+      "breaks": "A token appears in any response or log line.",
+      "why": "Tokens live in DO storage; responses and logs are redacted.",
+      "fix": "Keep tokens in Durable Object storage; never echo them; redact before logging.",
+      "probes": {
+        "strong": [
+          "redact",
+          "HttpOnly",
+          "never returned|grant_store"
+        ],
+        "weak": [
+          "__Host-|SameSite"
+        ]
+      },
+      "reference": "tenon/src/index.ts:157",
+      "tests": [
+        "the grant token never appears in any response"
+      ]
+    },
+    {
+      "id": "T5",
+      "name": "Writes must come from the app origin",
+      "breaks": "A signed-in cookie lets another site write.",
+      "why": "A signed-in cookie must not let another site write.",
+      "fix": "Refuse non-GET requests whose Origin header is not the app origin.",
+      "probes": {
+        "strong": [
+          "origin\\s*!==\\s*(new URL|url\\.origin)|origin\\s*!==\\s*null\\s*&&\\s*origin\\s*!=="
+        ],
+        "weak": [
+          "sec-fetch-site|csrf",
+          "SameSite=(Strict|Lax)"
+        ]
+      },
+      "reference": "tenon/src/index.ts:130",
+      "tests": [
+        "cross-origin writes are refused"
+      ]
+    },
+    {
+      "id": "T6",
+      "name": "Agent-written code runs in an isolate with no ambient network or secrets",
+      "breaks": "Agent code reaches the network or a binding it was not given.",
+      "why": "coil/hark/skin load agent code with Worker Loader and globalOutbound: null; containers hold the computer.",
+      "fix": "Load agent code with Worker Loader and globalOutbound: null; pass only the bindings it needs.",
+      "probes": {
+        "strong": [
+          "globalOutbound:\\s*null"
+        ],
+        "weak": [
+          "LOADER\\.(get|load)\\(",
+          "getSandbox|sandboxComputer|Container\\b"
+        ]
+      },
+      "reference": "tenon/src/index.ts:180",
+      "tests": [
+        "owner code has no network"
+      ]
+    },
+    {
+      "id": "T7",
+      "name": "A run is visible, truthful, and stoppable",
+      "breaks": "A run shows running forever after eviction, or a late result overwrites a stop.",
+      "why": "Every app shows a running turn and lets the owner stop it; a stop must stick.",
+      "fix": "Store run status; mark running rows interrupted on start; update to a final status only WHERE status = running.",
+      "probes": {
+        "strong": [
+          "\\/stop\\b|stopLoop|STOPPED_BY_OWNER|status = 'stopped'",
+          "interrupted|aborted"
+        ],
+        "weak": [
+          "AbortController|abort\\("
+        ]
+      },
+      "reference": "tenon/src/index.ts:158",
+      "tests": [
+        "a run is visible, finishes truthfully, and a stop sticks"
+      ]
+    },
+    {
+      "id": "T8",
+      "name": "Changes the agent makes are versioned, gated, and append-only",
+      "breaks": "A failing change goes live, or rollback rewrites history.",
+      "why": "skin generations, coil snapshot pairs, my-ax artifacts: the agent changes things, so changes need history and a gate.",
+      "fix": "Store versions in an append-only table; gate before live; rollback inserts a new row.",
+      "probes": {
+        "strong": [
+          "CREATE TABLE[^\\n]*\\b(generations|versions)\\b",
+          "snapshotId\\b|snapshotContainer\\(",
+          "\\/rollback\\b|\\/api\\/rollback"
+        ],
+        "weak": [
+          "rollback\\(",
+          "artifact"
+        ]
+      },
+      "reference": "tenon/src/index.ts:249",
+      "tests": [
+        "a broken version is rejected and never goes live",
+        "rollback appends; history is never rewritten",
+        "versions are per owner"
+      ]
+    },
+    {
+      "id": "T9",
+      "name": "Public pages are served before the gate; nothing else is",
+      "breaks": "An API route answers without identity, or a public page needs sign-in.",
+      "why": "Landing, /docs, /llms.txt, /robots.txt are public by design (repo shape v2); every other route is not.",
+      "fix": "Keep one PUBLIC set served before the identity check; everything else goes through it.",
+      "probes": {
+        "strong": [
+          "SIGN_IN_PATHS|PUBLIC_PATHS|const PUBLIC\\b"
+        ],
+        "weak": [
+          "robots\\.txt",
+          "llms\\.txt"
+        ]
+      },
+      "reference": "tenon/src/index.ts:25",
+      "tests": [
+        "public pages load without sign-in"
+      ]
+    }
+  ]
+}
