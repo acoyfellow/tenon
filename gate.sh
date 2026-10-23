@@ -56,7 +56,7 @@ if(!kernel.includes("tenon/invariants.json")) throw "basic/kernel does not read 
 if(/strong:\s*\[\//.test(kernel)) throw "basic/kernel still has inline probes";
 '
 
-echo "8. every gap has a fix with a runnable proof"
+echo "8. every gap is a confirmed fix task or labelled unconfirmed"
 for app in coil hark my-ax chat-ax skin; do
   node -e '
 const app=process.argv[1];
@@ -64,7 +64,8 @@ const r=JSON.parse(require("fs").readFileSync("../basic/reports/kernel-"+app+".j
 if(r.rows.length!==9) throw app+" rows "+r.rows.length;
 for(const row of r.rows){
   const gap=row.verdict==="partial"||row.verdict==="missing";
-  if(gap&&!(row.fix&&row.fix.change&&row.fix.reference&&row.fix.proof)) throw app+" "+row.id+" gap without fix";
+  if(gap&&!((row.fix&&row.fix.change&&row.fix.reference&&row.fix.proof&&row.fix.confirmed)||row.unconfirmed)) throw app+" "+row.id+" gap with neither a confirmed fix nor an unconfirmed label";
+  if(row.fix&&row.unconfirmed) throw app+" "+row.id+" both fix and unconfirmed";
   if(row.verdict==="n/a"&&!row.note) throw app+" "+row.id+" n/a without reason";
 }' "$app"
 done

@@ -24,7 +24,8 @@
         "anonymous API calls are refused",
         "forged and tampered sessions are refused",
         "an Access header without configured Access is refused"
-      ]
+      ],
+      "liveCheck": true
     },
     {
       "id": "T2",
@@ -46,7 +47,8 @@
       "tests": [
         "state survives and is keyed by owner",
         "one owner cannot read another owner"
-      ]
+      ],
+      "liveCheck": true
     },
     {
       "id": "T3",
@@ -68,7 +70,8 @@
       "tests": [
         "user payer with no grant fails instead of using host inference",
         "user payer with a grant routes to the user account"
-      ]
+      ],
+      "liveCheck": false
     },
     {
       "id": "T4",
@@ -89,7 +92,8 @@
       "reference": "tenon/src/index.ts:157",
       "tests": [
         "the grant token never appears in any response"
-      ]
+      ],
+      "liveCheck": false
     },
     {
       "id": "T5",
@@ -99,7 +103,8 @@
       "fix": "Refuse non-GET requests whose Origin header is not the app origin.",
       "probes": {
         "strong": [
-          "origin\\s*!==\\s*(new URL|url\\.origin)|origin\\s*!==\\s*null\\s*&&\\s*origin\\s*!=="
+          "origin\\s*!==\\s*(new URL|url\\.origin)|origin\\s*!==\\s*null\\s*&&\\s*origin\\s*!==",
+          "!\\s*(is)?[sS]ameOrigin\\w*\\(|(is)?[sS]ameOrigin\\w*\\([^)]*\\)\\s*(===|==)\\s*false"
         ],
         "weak": [
           "sec-fetch-site|csrf",
@@ -109,7 +114,8 @@
       "reference": "tenon/src/index.ts:130",
       "tests": [
         "cross-origin writes are refused"
-      ]
+      ],
+      "liveCheck": true
     },
     {
       "id": "T6",
@@ -129,7 +135,8 @@
       "reference": "tenon/src/index.ts:180",
       "tests": [
         "owner code has no network"
-      ]
+      ],
+      "liveCheck": true
     },
     {
       "id": "T7",
@@ -149,7 +156,8 @@
       "reference": "tenon/src/index.ts:158",
       "tests": [
         "a run is visible, finishes truthfully, and a stop sticks"
-      ]
+      ],
+      "liveCheck": false
     },
     {
       "id": "T8",
@@ -173,7 +181,8 @@
         "a broken version is rejected and never goes live",
         "rollback appends; history is never rewritten",
         "versions are per owner"
-      ]
+      ],
+      "liveCheck": false
     },
     {
       "id": "T9",
@@ -193,7 +202,8 @@
       "reference": "tenon/src/index.ts:25",
       "tests": [
         "public pages load without sign-in"
-      ]
+      ],
+      "liveCheck": true
     }
   ]
 }
