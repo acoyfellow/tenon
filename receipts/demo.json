@@ -1,5 +1,5 @@
 {
-  "at": "2026-10-19T09:56:27.516Z",
+  "at": "2026-10-19T14:43:13.087Z",
   "base": "http://127.0.0.1:8712",
   "steps": [
     {
@@ -13,7 +13,7 @@
       "name": "agent ships version 1",
       "status": 201,
       "body": {
-        "id": 29,
+        "id": 69,
         "status": "live",
         "why": ""
       }
@@ -22,7 +22,7 @@
       "name": "agent ships a broken version; the gate rejects it",
       "status": 422,
       "body": {
-        "id": 30,
+        "id": 70,
         "status": "rejected",
         "why": "boom"
       }
@@ -31,7 +31,7 @@
       "name": "agent ships version 2",
       "status": 201,
       "body": {
-        "id": 31,
+        "id": 71,
         "status": "live",
         "why": ""
       }
@@ -40,7 +40,7 @@
       "name": "owner rolls back to version 1 (appends, never rewrites)",
       "status": 201,
       "body": {
-        "id": 32,
+        "id": 72,
         "status": "live"
       }
     },
@@ -48,22 +48,22 @@
       "name": "agent code runs in an isolate",
       "status": 200,
       "body": {
-        "id": 15,
+        "id": 35,
         "status": "done",
         "result": "84",
-        "started_at": 1792403785704,
-        "ended_at": 1792403785707
+        "started_at": 1792420990162,
+        "ended_at": 1792420990165
       }
     },
     {
       "name": "agent code tries the network and is blocked",
       "status": 200,
       "body": {
-        "id": 16,
+        "id": 36,
         "status": "failed",
         "result": "\"This worker is not permitted to access the internet via global functions like fetch(). It must use capabilities (such as bindings in 'env') to talk to the outside world.\"",
-        "started_at": 1792403785709,
-        "ended_at": 1792403785712
+        "started_at": 1792420990169,
+        "ended_at": 1792420990171
       }
     },
     {
